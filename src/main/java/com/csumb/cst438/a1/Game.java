@@ -29,11 +29,11 @@ public class Game {
     private ArrayList<String> wordlist;  // list of words
     
     public Game() {
-        word="computer";
+        generator = new Random();
+        word=randomWord();
         createDisplayWord();
         state=1;
         wordlist=null;
-        generator = new Random();
     }
     
     public int getState(){
@@ -50,7 +50,7 @@ public class Game {
     
     public void startNewGame() {
         state = 1;
-        word = "computer";
+        word = randomWord();
         createDisplayWord();
         
     }
@@ -129,7 +129,7 @@ public class Game {
             }
             int t = generator.nextInt(wordlist.size());
             return wordlist.get(t);
-
+        
         } catch (Exception e) {
             System.out.println("Error randomWord: reading wordlist. " + e.getMessage());
             System.exit(0);
