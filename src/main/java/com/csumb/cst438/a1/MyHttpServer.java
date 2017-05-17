@@ -112,7 +112,7 @@ public class MyHttpServer {
                                         + "</body></html>";
                                 cookie = "0";
                                 break;
-                        }
+                        } 
 
                     } else {
                         response = "<!DOCTYPE html><html><head><title>MyHttpServer</title></head><body><h2>Hangman</h2>"
@@ -130,6 +130,7 @@ public class MyHttpServer {
                 } else {
                     t.getResponseHeaders().set("Set-Cookie", "0");
                 }
+                t.getResponseHeaders().set("displayword", game.getDisplayWord()); // set the displayWord in the HTTP Headers
                 System.out.println("New cookie:" + cookie);
                 t.sendResponseHeaders(200, response.length());
                 System.out.println("response=" + response);

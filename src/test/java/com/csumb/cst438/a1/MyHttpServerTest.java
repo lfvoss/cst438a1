@@ -46,21 +46,26 @@ public class MyHttpServerTest {
      */
     @Test
     public void testHandle() {
-        String expectedBody = "<!DOCTYPE html><html><head><title>MyHttpServer</title></head>" + 
-                "<body><h2>Hangman</h2><img src=\"h1.gif\"><h2 style=\"font-family:'Lucida Console', monospace\">" +
-                " _ _ _ _ _ _ _ _</h2><form action=\"/\" method=\"get\"> Guess a character <input type=\"text\" name=\"guess\"><br>" +
-                "<input type=\"submit\" value=\"Submit\"></form></body></html>";
+
 
 
 
     Headers header = new Headers();
-    try {
+    try { 
         TestHttpExchange t = new TestHttpExchange("/", header);
         MyHttpServer.MyHandler handler = new MyHttpServer.MyHandler();
         handler.handle(t);
         // check response for cookie returned, response code=200, and expected response body 
         Headers response = t.getResponseHeaders();
-        String cookie1 = response.getFirst("Set-cookie");
+        String cookie1 = response.getFirst("Set-cookie"); 
+
+        
+        String expectedBody = "<!DOCTYPE html><html><head><title>MyHttpServer</title></head>" + 
+        "<body><h2>Hangman</h2><img src=\"h1.gif\"><h2 style=\"font-family:'Lucida Console', monospace\"> " + response.getFirst("displayword") + // get the value of the display word from the headers
+        "</h2><form action=\"/\" method=\"get\"> Guess a character <input type=\"text\" name=\"guess\"><br>" +
+        "<input type=\"submit\" value=\"Submit\"></form></body></html>";
+        
+        
         assertEquals("Bad content type", "text/html", response.getFirst("Content-type"));
         assertNotNull("No cookie returned", cookie1);
         assertEquals("Bad response code.",200, t.getResponseCode());

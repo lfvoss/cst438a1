@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.*;
+
 
 /**
  * Test of Game class
@@ -32,7 +34,22 @@ public class GameTest {
     @After
     public void tearDown() {
     }
-
+    
+    //helper method to generate random char that's not in game's random word
+    private char randCharNotInWord(Game instance) {
+        String temp = instance.getWord();
+        char c = 'a';
+        boolean flag = true;
+        while (flag) {
+            Random r = new Random();
+            c = (char)(r.nextInt(26) + 'a');
+            if (temp.indexOf(c) < 0) {  // if char c is not present in temp
+                flag = false;
+            }
+        }
+        return c;
+    }
+    
     /**
      * Test of getState method, of class Game.
      * at start of game, state should be 1.
@@ -46,10 +63,14 @@ public class GameTest {
         int expResult = 1;
         int result = instance.getState();
         assertEquals(expResult, result);
-        instance.playGame('c');
+        String temp = instance.getWord();
+        Random r = new Random();
+        int i = r.nextInt(temp.length()-1);   //generate rand int !> length word
+        instance.playGame(temp.charAt(i));    //test letter known w/in the word
         result = instance.getState();
         assertEquals(expResult, result);
-        instance.playGame('d');
+        char rand = randCharNotInWord(instance); //get rand letter not in word
+        instance.playGame(rand);                 //test letter known not in word
         result = instance.getState();
         assertEquals(expResult+1, result);
     }
@@ -61,8 +82,8 @@ public class GameTest {
     public void testGetWord() {
         System.out.println("getWord");
         Game instance = new Game();
-        String expResult = "computer";
-        String result = instance.getWord();
+        String expResult = instance.getWord();
+        String result = instance.getWord();     //not sure how to make different
         assertEquals(expResult, result);
     }
 
@@ -73,12 +94,13 @@ public class GameTest {
     public void testGetDisplayWord() {
         System.out.println("getDisplayWord");
         Game instance = new Game();
-        String expResult = "_ _ _ _ _ _ _ _";
+        String expResult = instance.getDisplayWord();
         String result = instance.getDisplayWord();
         assertEquals(expResult, result);
-        instance.playGame('r');
+        String temp = instance.getWord();
+        instance.playGame(temp.charAt(0));
         result = instance.getDisplayWord();
-        assertEquals("_ _ _ _ _ _ _ r", result);
+        assertEquals(temp.charAt(0), result.charAt(0));
 
     }
 
@@ -90,12 +112,13 @@ public class GameTest {
         System.out.println("startNewGame");
         Game instance = new Game();
         instance.startNewGame();
-        instance.playGame('c');
-        instance.playGame('d');
+        char temp = instance.getWord().charAt(0);  //get first letter from word
+        instance.playGame(temp);
+        char rand = randCharNotInWord(instance); //get rand letter not in word
+        instance.playGame(rand);
         instance.startNewGame();
         int result = instance.getState();
         assertEquals(1,result);
- 
     }
 
     /**
@@ -105,42 +128,48 @@ public class GameTest {
      */
     @org.junit.Test
     public void testPlayGame() {
+        
         System.out.println("playGame");
-        char guess = 'c';
+
         Game instance = new Game();
+        String word = instance.getWord();
+        char guess = word.charAt(0);
+
         int expResult = 0;
         int result = instance.playGame(guess);
         assertEquals(expResult, result);
-        result = instance.playGame('d');
+        
+        char temp = randCharNotInWord(instance);
+        result = instance.playGame(temp);
         assertEquals(2, result);
-        result = instance.playGame('f');
+        temp = randCharNotInWord(instance);
+        result = instance.playGame(temp);
         assertEquals(2, result);
-        result = instance.playGame('g');
+        temp = randCharNotInWord(instance);
+        result = instance.playGame(temp);
         assertEquals(2, result);
-        result = instance.playGame('h');
+        temp = randCharNotInWord(instance);
+        result = instance.playGame(temp);        
         assertEquals(2,result);
-        result = instance.playGame('j');
+        temp = randCharNotInWord(instance);
+        result = instance.playGame(temp);
         assertEquals(2,result);
-        result = instance.playGame('k');
+        temp = randCharNotInWord(instance);
+        result = instance.playGame(temp);
         assertEquals(3,result);
  
         instance.startNewGame();
-        result = instance.playGame('c');
-        assertEquals(0,result);
-        result = instance.playGame('o');
-        assertEquals(0,result);
-        result = instance.playGame('m');
-        assertEquals(0,result);
-        result = instance.playGame('p');
-        assertEquals(0,result);
-        result = instance.playGame('u');
-        assertEquals(0,result);
-        result = instance.playGame('t');
-        assertEquals(0,result);
-        result = instance.playGame('e');
-        assertEquals(0,result);
-        result = instance.playGame('r');
-        assertEquals(1,result);
+        word = instance.getWord();
+        int x = word.length();
+        for (int i = 0; i < x; i++) { 
+            if (i == x - 1) {
+                result = instance.playGame(word.charAt(i));
+                assertEquals(1,result);
+            } else {
+                result = instance.playGame(word.charAt(i));
+                assertEquals(0,result); 
+            }
+        }
     }
     
 }

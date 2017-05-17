@@ -29,7 +29,7 @@ public class Game {
     private ArrayList<String> wordlist;  // list of words
     
     public Game() {
-        generator = new Random();
+        generator=new Random();
         word=randomWord();
         createDisplayWord();
         state=1;
