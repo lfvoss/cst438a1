@@ -83,7 +83,7 @@ public class GameTest {
         System.out.println("getWord");
         Game instance = new Game();
         String expResult = instance.getWord();
-        String result = instance.getWord();     //not sure how to make different
+        String result = instance.getWord();     
         assertEquals(expResult, result);
     }
 

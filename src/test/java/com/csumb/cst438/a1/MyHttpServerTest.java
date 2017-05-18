@@ -47,9 +47,6 @@ public class MyHttpServerTest {
     @Test
     public void testHandle() {
 
-
-
-
     Headers header = new Headers();
     try { 
         TestHttpExchange t = new TestHttpExchange("/", header);
@@ -75,4 +72,24 @@ public class MyHttpServerTest {
     }
     }
     
+    @Test
+         public void testDownloadGif () {
+            
+            System.out.println("downloadGif");
+            
+            Headers header = new Headers();
+            try {
+                TestHttpExchange t = new TestHttpExchange("/h1.gif", header);
+                MyHttpServer.MyHandler handler = new MyHttpServer.MyHandler();
+                handler.handle(t);
+            
+                Headers response = t.getResponseHeaders();
+                assertEquals("Bad content type", "image/gif", response.getFirst("Content-type"));
+                assertEquals("Bad response code.",200, t.getResponseCode());
+                // check that length of response body is 8581 bytes. 
+                assertEquals("Bad response length.","8581", response.getFirst("Content-length"));
+            } catch (Exception e) {
+                fail("unexpected exception in testHandle "+e.getMessage());
+            }
+        }
 }

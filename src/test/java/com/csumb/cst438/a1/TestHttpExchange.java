@@ -9,6 +9,10 @@ import java.net.URI;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpPrincipal;
+import static jdk.nashorn.internal.objects.NativeRegExp.test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 
 /**
  * Mockup for HttpExchange used in unit testing.
@@ -63,6 +67,8 @@ import com.sun.net.httpserver.HttpPrincipal;
  * 
  * 
  */
+
+
 public class TestHttpExchange extends com.sun.net.httpserver.HttpExchange {
 	
 	 URI uri;
@@ -73,7 +79,8 @@ public class TestHttpExchange extends com.sun.net.httpserver.HttpExchange {
 	 
 	 // the following methods are added for testing convenience.  
 	 // they are not overrides of methods in HttpExchange.
-	 
+         
+         
 	 public URI getUri() {
 		return uri;
 	}
@@ -195,5 +202,4 @@ public class TestHttpExchange extends com.sun.net.httpserver.HttpExchange {
 	public void setAttribute(String arg0, Object arg1) {
 		throw new java.lang.UnsupportedOperationException();
 	}
-	
 }
